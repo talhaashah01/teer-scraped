@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const baseURL = 'https://en.wikipedia.org';
-const imagesDir = path.join(__dirname, 'png-list');
+const imagesDir = path.join(__dirname, 'png-list-airline2');
 
 // Create the list directory if it doesn't exist
 if (!fs.existsSync(imagesDir)) {
@@ -45,13 +45,13 @@ async function fetchAirlineImage(iataCode, icaoCode, airlineLink) {
 
     const imageElement = $('.infobox-image img').first();
     const imageUrl = imageElement.attr('src');
-    const airlineName = $('#firstHeading').text().trim().replace(/[^a-zA-Z0-9]/g, '');
+    const airlineName = $('#firstHeading').text().trim().replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
 
     if (imageUrl && airlineName) {
       const fullImageUrl = `https:${imageUrl}`;
       const imageResponse = await axios.get(fullImageUrl, { responseType: 'arraybuffer' });
 
-      const imagePath = path.join(imagesDir, `${iataCode}-${icaoCode}-${airlineName}.png`);
+      const imagePath = path.join(imagesDir, `${iataCode}.png`);
       fs.writeFileSync(imagePath, imageResponse.data);
       console.log(`Image for ${iataCode}-${icaoCode}-${airlineName} saved as ${iataCode}-${icaoCode}-${airlineName}.png`);
     }
